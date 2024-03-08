@@ -1,4 +1,4 @@
-name: React to Branch Changes
+name: React to Branch Changes Non-prod
 
 on:
   push:

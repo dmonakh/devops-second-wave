@@ -1,4 +1,4 @@
-name: React to Branch Changes
+name: React to Branch Changes Prod
 
 on:
   push:
