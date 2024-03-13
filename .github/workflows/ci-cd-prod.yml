@@ -4,9 +4,10 @@ on:
   push:
     paths:
       - 'terraform/**'
-      - '.github/workflows/ci-cd-nonprod.yml'
+      - 'microservice/**'
+      - '.github/workflows/ci-cd-prod.yml'
     branches:
-      - stage
+      - main
   workflow_dispatch:
 
 env:

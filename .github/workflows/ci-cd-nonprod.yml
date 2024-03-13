@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'terraform/**'
+      - 'microservice/**'
       - '.github/workflows/ci-cd-nonprod.yml'
     branches:
       - stage
