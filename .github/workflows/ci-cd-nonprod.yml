@@ -55,12 +55,11 @@ jobs:
 
       - name: Create Terraform variables file
         run: |
-          echo "BUCKET_NAME = \"$BUCKET_NAME\"" >> terraform.tfvars
-          echo "SA_ACC = \"$SA_ACC\"" >> terraform.tfvars
-          echo "DEF_NAME = \"$DEF_NAME\"" >> terraform.tfvars
-          echo "CLUSTER_NAME = \"$CLUSTER_NAME\"" >> terraform.tfvars
-          echo "REGION = \"$REGION\"" >> terraform.tfvars
-          echo "ZONE = \"$ZONE\"" >> terraform.tfvars
+          echo "DEF_NAME=$DEF_NAME" >> $GITHUB_ENV
+          echo "REGION=$REGION" >> $GITHUB_ENV
+          echo "ZONE=$ZONE" >> $GITHUB_ENV
+          echo "BUCKET_NAME=$BUCKET_NAME" >> $GITHUB_ENV
+          echo "SA_ACC=$SA_ACC" >> $GITHUB_ENV
 
       - name: terraform plan
         id: plan
