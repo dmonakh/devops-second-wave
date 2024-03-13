@@ -1,24 +1,14 @@
-variable "def_name" {
-  default = "${env.DEF_NAME}" 
-}
+variable "def_name" {}
 
 variable "project_id" {}
 
-variable "region_prj" {
-  default = "${env.REGION}"
-}
+variable "region_prj" {}
 
-variable "zone_prj" {
-  default = "${env.ZONE}"
-}
+variable "zone_prj" {}
 
-variable "sa_name" {
-  default = "${env.BUCKET_NAME}"
-}
+variable "sa_name" {}
 
-variable "sa_account" {
-  default = "${env.SA_ACC}"
-}
+variable "sa_account" {}
 
 # variable "domain" {
 #   default = "it-sproutdevteam.fun" # Replace with your domain.
