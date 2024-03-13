@@ -1,64 +1,64 @@
-name: CI/CD Non-prod
+# name: CI/CD Non-prod
 
-on:
-  push:
-    paths:
-      - 'terraform/**'
-      - '.github/workflows/ci-cd-nonprod.yml'
-    branches:
-      - main
-  workflow_dispatch:
+# on:
+#   push:
+#     paths:
+#       - 'terraform/**'
+#       - '.github/workflows/ci-cd-nonprod.yml'
+#     branches:
+#       - main
+#   workflow_dispatch:
 
-env:
-  GCP_PROJECT_ID_PROD1: ${{ secrets.GCP_PROJECT_ID_NONPROD1_PROD1 }}
-  BUCKET_NAME: tf-state-nonprod1 # Replace with your bucket name.
-  SA_NAME: project-service-account@nonprod1-svc-6u24.iam.gserviceaccount.com  # Replace with your service account.
-  CLUSTER_NAME: nonprod1-clusterk8s # Replace with your cluster name (your_cluster_name-clusterk8s).
-  REGION: us-central1 # Replace with your region.
+# env:
+#   GCP_PROJECT_ID_PROD1: ${{ secrets.GCP_PROJECT_ID_NONPROD1_PROD1 }}
+#   BUCKET_NAME: tf-state-nonprod1 # Replace with your bucket name.
+#   SA_NAME: project-service-account@nonprod1-svc-6u24.iam.gserviceaccount.com  # Replace with your service account.
+#   CLUSTER_NAME: nonprod1-clusterk8s # Replace with your cluster name (your_cluster_name-clusterk8s).
+#   REGION: us-central1 # Replace with your region.
 
-jobs:
-  terraform-CI:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-        working-directory: ./terraform
+# jobs:
+#   terraform-CI:
+#     runs-on: ubuntu-latest
+#     defaults:
+#       run:
+#         shell: bash
+#         working-directory: ./terraform
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v3
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: latest
-          terraform_wrapper: false
+#       - name: Setup Terraform
+#         uses: hashicorp/setup-terraform@v2
+#         with:
+#           terraform_version: latest
+#           terraform_wrapper: false
 
-      - name: Decode credentials
-        run: echo "${{ secrets.GCP_CREDENTIALS_NONPROD1 }}" | base64 -d > credentials_file.json
+#       - name: Decode credentials
+#         run: echo "${{ secrets.GCP_CREDENTIALS_NONPROD1 }}" | base64 -d > credentials_file.json
 
-      - name: Authenticate with Google Cloud
-        run: |
-          gcloud config set account ${SA_NAME}
-          gcloud auth activate-service-account --key-file=credentials_file.json
-          gcloud config set project ${{ secrets.GCP_PROJECT_ID_NONPROD1}}
+#       - name: Authenticate with Google Cloud
+#         run: |
+#           gcloud config set account ${SA_NAME}
+#           gcloud auth activate-service-account --key-file=credentials_file.json
+#           gcloud config set project ${{ secrets.GCP_PROJECT_ID_NONPROD1}}
 
-      - name: Create bucket if dosn't exists
-        env:
-          SCRIPT_DIR: ${{ github.workspace }}/terraform/scripts
-        run: bash  $SCRIPT_DIR/create-bucket.sh
+#       - name: Create bucket if dosn't exists
+#         env:
+#           SCRIPT_DIR: ${{ github.workspace }}/terraform/scripts
+#         run: bash  $SCRIPT_DIR/create-bucket.sh
           
-      - name: terraform init
-        run: terraform init
+#       - name: terraform init
+#         run: terraform init
 
-      - name: terraform plan
-        id: plan
-        run: terraform plan -lock=false -var="project_id=${{ secrets.GCP_PROJECT_ID_NONPROD1 }}" 
+#       - name: terraform plan
+#         id: plan
+#         run: terraform plan -lock=false -var="project_id=${{ secrets.GCP_PROJECT_ID_NONPROD1 }}" 
         
-      - name: terraform apply 
-        if: "!contains(github.event.head_commit.message, 'destroy')"
-        run: terraform apply -lock=false -auto-approve -var="project_id=${{ secrets.GCP_PROJECT_ID_NONPROD1 }}"
+#       - name: terraform apply 
+#         if: "!contains(github.event.head_commit.message, 'destroy')"
+#         run: terraform apply -lock=false -auto-approve -var="project_id=${{ secrets.GCP_PROJECT_ID_NONPROD1 }}"
 
-      - name: Terraform Destroy
-        if: contains(github.event.head_commit.message, 'destroy')
-        run: terraform destroy -lock=false -auto-approve -var="project_id=${{ secrets.GCP_PROJECT_ID_NONPROD1 }}"
+#       - name: Terraform Destroy
+#         if: contains(github.event.head_commit.message, 'destroy')
+#         run: terraform destroy -lock=false -auto-approve -var="project_id=${{ secrets.GCP_PROJECT_ID_NONPROD1 }}"
