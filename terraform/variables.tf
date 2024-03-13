@@ -1,23 +1,23 @@
 variable "def_name" {
-  default = "$DEF_NAME" 
+  default = "${var.DEF_NAME}" 
 }
 
 variable "project_id" {}
 
 variable "region_prj" {
-  default = "$REGION" 
+  default = "${var.REGION}"
 }
 
 variable "zone_prj" {
-  default = "$ZONE"
+  default = "${var.ZONE}"
 }
 
 variable "sa_name" {
-  default = "$BUCKET_NAME" 
+  default = "${var.BUCKET_NAME}"
 }
 
 variable "sa_account" {
-  default = "$SA_ACC"
+  default = "${var.SA_ACC}"
 }
 
 # variable "domain" {
