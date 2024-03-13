@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 env:
-  GCP_PROJECT_ID_NONPROD1: ${{ secrets.GCP_PROJECT_ID_NONPROD1_NONPROD1 }}
+  GCP_PROJECT_ID_NONPROD1: ${{ secrets.GCP_PROJECT_ID_NONPROD1 }}
   BUCKET_NAME: tf-state-nonprod1 # Replace with your bucket name.
   SA_NAME: project-service-account@nonprod1-svc-6u24.iam.gserviceaccount.com  # Replace with your service account.
   CLUSTER_NAME: nonprod1-clusterk8s # Replace with your cluster name (your_cluster_name-clusterk8s).
