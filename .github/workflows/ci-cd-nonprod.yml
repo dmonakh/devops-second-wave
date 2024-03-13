@@ -53,6 +53,16 @@ jobs:
       - name: terraform init
         run: terraform init -backend-config="bucket=${BUCKET_NAME}"
 
+      - name: Create Terraform variables file
+        run: |
+          echo "GCP_PROJECT_ID_NONPROD1 = \"$GCP_PROJECT_ID_NONPROD1\"" > terraform.tfvars
+          echo "BUCKET_NAME = \"$BUCKET_NAME\"" >> terraform.tfvars
+          echo "SA_ACC = \"$SA_ACC\"" >> terraform.tfvars
+          echo "DEF_NAME = \"$DEF_NAME\"" >> terraform.tfvars
+          echo "CLUSTER_NAME = \"$CLUSTER_NAME\"" >> terraform.tfvars
+          echo "REGION = \"$REGION\"" >> terraform.tfvars
+          echo "ZONE = \"$ZONE\"" >> terraform.tfvars
+
       - name: terraform plan
         id: plan
         # run: terraform plan -lock=false -var="project_id=${{ secrets.GCP_PROJECT_ID_NONPROD1 }}" 

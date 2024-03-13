@@ -4,7 +4,7 @@
 
 # variable "project_id" {}
 
-# enviable "region_prj" {
+# variable "region_prj" {
 #   default = "${env.REGION}"
 # }
 
