@@ -1,23 +1,23 @@
 variable "def_name" {
-  default = "nonprod1" # Replace a name for your resources.
+  default = "$DEF_NAME" 
 }
 
 variable "project_id" {}
 
 variable "region_prj" {
-  default = "us-central1" # Replace with your region.
+  default = "$REGION" 
 }
 
 variable "zone_prj" {
-  default = "us-central1-a" # Replace with your zone.
+  default = "$ZONE"
 }
 
 variable "sa_name" {
-  default = "tf-state-nonprod1" # Replace with your name for tfstate.
+  default = "$BUCKET_NAME" 
 }
 
 variable "sa_account" {
-  default = "project-service-account@nonprod1-svc-6u24.iam.gserviceaccount.com" # Replace with your service account.
+  default = "$SA_ACC"
 }
 
 # variable "domain" {
