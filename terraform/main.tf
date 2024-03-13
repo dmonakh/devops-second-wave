@@ -1,18 +1,19 @@
 resource "google_compute_subnetwork" "vpc_subnetwork" {
-  name                     = "${var.def_name}-subnetwork-${var.zone_prj}"
+  name                     = "${var.DEF_NAME}-subnetwork-${var.ZONE}"
   ip_cidr_range            = var.local_ip_range
-  region                   = var.region_prj
+  region                   = var.REGION
   network                  = google_compute_network.vpc_network.id
   private_ip_google_access = true
 }
 
 resource "google_compute_network" "vpc_network" {
-  name                    = "${var.def_name}-network"
+  name                    = "${var.DEF_NAME}-network"
   auto_create_subnetworks = false
 }
+
 resource "google_container_cluster" "k8s_cluster" {
-  name               = "${var.def_name}-clusterk8s"
-  location           = var.region_prj
+  name               = "${var.DEF_NAME}-clusterk8s"
+  location           = var.REGION
   initial_node_count = 1
 
   network            = google_compute_network.vpc_network.name
@@ -23,7 +24,7 @@ resource "google_container_cluster" "k8s_cluster" {
   node_config {
     preemptible     = true
     machine_type    = "e2-medium"
-    service_account = var.sa_account
+    service_account = var.SA_ACC
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform"
     ]
@@ -44,7 +45,7 @@ resource "google_container_cluster" "k8s_cluster" {
       oauth_scopes = [
         "https://www.googleapis.com/auth/cloud-platform"
       ]
-      service_account = var.sa_account
+      service_account = var.SA_ACC
     }
   }
 
@@ -53,18 +54,20 @@ resource "google_container_cluster" "k8s_cluster" {
     google_compute_subnetwork.vpc_subnetwork
   ]
 }
+
 # provider "dns" {
 #   update {
 #     key_name = var.domain
 #   }
 # }
+
 output "region" {
-  value       = var.region_prj
+  value       = var.REGION
   description = "GCloud Region"
 }
 
 output "project_id" {
-  value       = var.project_id
+  value       = var.GCP_PROJECT_ID_NONPROD1
   description = "GCloud Project ID"
 }
 
@@ -72,7 +75,6 @@ output "kubernetes_cluster_name" {
   value       = google_container_cluster.k8s_cluster.name
   description = "GKE Cluster Name"
 }
-
 
 output "kubernetes_cluster_endpoint" {
   value       = google_container_cluster.k8s_cluster.endpoint
