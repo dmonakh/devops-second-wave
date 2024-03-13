@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 env:
-  GCP_PROJECT_ID_NONPROD1: ${{ secrets.GCP_PROJECT_ID_NONPROD1 }}
+  GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID_NONPROD1 }}
   BUCKET_NAME: tf-state-nonprod1 # Replace with your bucket name.
   SA_ACC: project-service-account@nonprod1-svc-6u24.iam.gserviceaccount.com  # Replace with your service account.
   DEF_NAME: nonprod1
@@ -53,18 +53,19 @@ jobs:
       - name: terraform init
         run: terraform init -backend-config="bucket=${BUCKET_NAME}"
 
-      - name: Create Terraform variables file
-        run: |
-          echo "DEF_NAME=$DEF_NAME" >> $GITHUB_ENV
-          echo "REGION=$REGION" >> $GITHUB_ENV
-          echo "ZONE=$ZONE" >> $GITHUB_ENV
-          echo "BUCKET_NAME=$BUCKET_NAME" >> $GITHUB_ENV
-          echo "SA_ACC=$SA_ACC" >> $GITHUB_ENV
+      # - name: Create Terraform variables file
+      #   run: |
+      #     echo "DEF_NAME=$DEF_NAME" >> $GITHUB_ENV
+      #     echo "REGION=$REGION" >> $GITHUB_ENV
+      #     echo "ZONE=$ZONE" >> $GITHUB_ENV
+      #     echo "BUCKET_NAME=$BUCKET_NAME" >> $GITHUB_ENV
+      #     echo "SA_ACC=$SA_ACC" >> $GITHUB_ENV
 
       - name: terraform plan
         id: plan
         # run: terraform plan -lock=false -var="project_id=${{ secrets.GCP_PROJECT_ID_NONPROD1 }}" 
-        run: terraform plan -lock=false
+        # run: terraform plan -lock=false
+        run: terraform plan -lock=false -var="def_name=${{ env.DEF_NAME }}" -var="project_id=${{ env.GCP_PROJECT_ID }}" -var="region_prj=${{ env.REGION }}" -var="zone_prj=${{ env.ZONE }}" -var="sa_name=${{ env.BUCKET_NAME }}" -var="sa_account=${{ env.SA_ACC }}"
         
       - name: terraform apply 
         if: "!contains(github.event.head_commit.message, 'destroy')"
