@@ -90,5 +90,3 @@ jobs:
       
   #     - name: Get kubeconfig 
   #       run: gcloud container clusters get-credentials $CLUSTER_NAME --region=$REGION --project=${{ ecrets.GCP_PROJECT_ID_NONPROD1 }}
-
-
