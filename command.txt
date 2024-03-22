@@ -1,1 +1,8 @@
-test
+# COMAND FOR CHATWOOT/Novu
+# write sh for isntall chatwoot, novu
+# get ip chatwoot
+# get ip novu 
+# how add domain - domain, dns server on google
+# microservice non-prod1
+# microservice merge to k8s
+# update code for prod
