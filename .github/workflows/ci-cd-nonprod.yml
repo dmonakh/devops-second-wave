@@ -45,7 +45,7 @@ jobs:
       - name: Create bucket if dosn't exists
         env:
           SCRIPT_DIR: ${{ github.workspace }}/non-prod/scripts
-        run: bash  $SCRIPT_DIR/create-bucket.sh
+        run: bash $SCRIPT_DIR/create-bucket.sh
           
       - name: terraform init
         run: terraform init -backend-config="bucket=${BUCKET_NAME}" -chdir=terraform
@@ -90,4 +90,3 @@ jobs:
   #     - name: Get kubeconfig 
   #       run: gcloud container clusters get-credentials $CLUSTER_NAME --region=$REGION --project=${{ ecrets.GCP_PROJECT_ID_NONPROD1 }}
 
-  
