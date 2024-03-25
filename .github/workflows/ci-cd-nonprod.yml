@@ -87,7 +87,7 @@ jobs:
         uses: simenandre/setup-gke-gcloud-auth-plugin@v1
       
       - name: Get kubeconfig 
-        run: gcloud container clusters get-credentials $CLUSTER_NAME --region=$REGION --project=${{ ecrets.GCP_PROJECT_ID_NONPROD1 }}
+        run: gcloud container clusters get-credentials $CLUSTER_NAME --region=$REGION --project=${{ secrets.GCP_PROJECT_ID_NONPROD1 }}
 
       - name: Deploy Chatwoot
         env:
