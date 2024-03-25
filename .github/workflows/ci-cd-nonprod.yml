@@ -16,7 +16,7 @@ env:
   REGION: us-central1 # Replace with you region.
 
 jobs:
-  CI:
+  Infrastructure:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -59,33 +59,45 @@ jobs:
 
       - name: Terraform Destroy
         if: contains(github.event.head_commit.message, 'destroy')
-        run: terraform destroy -lock=false -auto-approve -var="project_id=${{ secrets.GCP_PROJECT_ID_NONPROD1 }}" 
-        
-  # CD:
-  #   needs: 
-  #     - CI
-  #   if: "!contains(github.event.head_commit.message, 'destroy') "
-  #   runs-on: ubuntu-latest
-  #   defaults:
-  #     run:
-  #       working-directory: ./terraform
+        run: terraform destroy -lock=false -auto-approve -var="project_id=${{ secrets.GCP_PROJECT_ID_NONPROD1 }}"   
+  
+  Deployment:
+    needs:
+      - Infrastructure 
+    if: "contains(github.event.head_commit.message, 'init') "
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./non-prod   
           
-  #   steps:
-  #     - name: Clon Rep
-  #       uses: actions/checkout@v3
+    steps:
+      - name: Clon Rep
+        uses: actions/checkout@v3
       
-  #     - name: Decode credentials
-  #       run: echo "${{ secrets.GCP_CREDENTIALS_NONPROD1 }}" | base64 -d > credentials_file.json
+      - name: Decode credentials
+        run: echo "${{ secrets.GCP_CREDENTIALS_NONPROD1 }}" | base64 -d > credentials_file.json
       
-  #     - name: Authenticate with Google Cloud
-  #       run: |
-  #             gcloud config set account ${SA_ACC}
-  #             gcloud auth activate-service-account --key-file=credentials_file.json
-  #             gcloud config set project ${{ ecrets.GCP_PROJECT_ID_NONPROD1 }}
+      - name: Authenticate with Google Cloud
+        run: |
+              gcloud config set account ${SA_ACC}
+              gcloud auth activate-service-account --key-file=credentials_file.json
+              gcloud config set project ${{ ecrets.GCP_PROJECT_ID_NONPROD1 }}
       
-  #     - name: Auth Plugin for cluster
-  #       uses: simenandre/setup-gke-gcloud-auth-plugin@v1
+      - name: Auth Plugin for cluster
+        uses: simenandre/setup-gke-gcloud-auth-plugin@v1
       
-  #     - name: Get kubeconfig 
-  #       run: gcloud container clusters get-credentials $CLUSTER_NAME --region=$REGION --project=${{ ecrets.GCP_PROJECT_ID_NONPROD1 }}
+      - name: Get kubeconfig 
+        run: gcloud container clusters get-credentials $CLUSTER_NAME --region=$REGION --project=${{ ecrets.GCP_PROJECT_ID_NONPROD1 }}
 
+      - name: Deploy Chatwoot
+        env:
+          SCRIPT_DIR: ${{ github.workspace }}/non-prod/scripts
+        run: bash $SCRIPT_DIR/init-chatwoot.sh
+
+      - name: Wait for 5 minutes
+        run: sleep 300s
+
+      - name: Deploy Novu
+        env:
+          SCRIPT_DIR: ${{ github.workspace }}/non-prod/scripts
+        run: bash $SCRIPT_DIR/init-novu.sh

@@ -11,8 +11,8 @@
 gcloud container clusters get-credentials nonprod1-clusterk8s --region us-central1 --project nonprod1-svc-6u24
 
 
-use first install
-gcloud components install kubectl
-
-
 generate 
+
+chatwoot 6 min
+
+git clone https://github.com/novuhq/novu.git
