@@ -3,6 +3,8 @@ helm install chatwoot chatwoot/chatwoot -f .env_chat.yml
 
 
 git clone https://github.com/novuhq/novu.git
+
+
 cd novu/docker/kubernetes/helm/
 mv Chart.lock
 helm dependency build
