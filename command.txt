@@ -6,3 +6,13 @@
 # microservice non-prod1
 # microservice merge to k8s
 # update code for prod
+
+
+gcloud container clusters get-credentials nonprod1-clusterk8s --region us-central1 --project nonprod1-svc-6u24
+
+
+use first install
+gcloud components install kubectl
+
+
+generate 
