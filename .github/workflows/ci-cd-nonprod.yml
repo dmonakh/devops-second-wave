@@ -48,15 +48,14 @@ jobs:
         run: bash $SCRIPT_DIR/create-bucket.sh
           
       - name: terraform init
-        run: terraform init -backend-config="bucket=${BUCKET_NAME}" -chdir=terraform
+        run: cd terraform && terraform init -backend-config="bucket=${BUCKET_NAME}"
 
       - name: terraform plan
-        id: plan
-        run: terraform plan -lock=false -var="project_id=${{ secrets.GCP_PROJECT_ID_NONPROD1 }}" -chdir=terraform
+        run: cd terraform && terraform plan -lock=false -var="project_id=${{ secrets.GCP_PROJECT_ID_NONPROD1 }}" 
         
       - name: terraform apply 
         if: "!contains(github.event.head_commit.message, 'destroy')"
-        run: terraform apply -lock=false -auto-approve -var="project_id=${{ secrets.GCP_PROJECT_ID_NONPROD1 }}" -chdir=terraform
+        run: cd terraform && terraform apply -lock=false -auto-approve -var="project_id=${{ secrets.GCP_PROJECT_ID_NONPROD1 }}" 
 
       - name: Terraform Destroy
         if: contains(github.event.head_commit.message, 'destroy')
