@@ -22,7 +22,7 @@ resource "google_container_cluster" "k8s_cluster" {
 
   node_config {
     preemptible     = true
-    machine_type    = "e2-medium"
+    machine_type    = "n1-standard-2"
     service_account = var.sa_account
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform"
