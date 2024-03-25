@@ -44,7 +44,7 @@ jobs:
 
       - name: Create bucket if dosn't exists
         env:
-          SCRIPT_DIR: ${{ github.workspace }}/non-prod/terraform/scripts
+          SCRIPT_DIR: ${{ github.workspace }}/non-prod/scripts
         run: bash $SCRIPT_DIR/create-bucket.sh
           
       - name: terraform init
