@@ -1,6 +1,5 @@
 #!/bin/bash
 
-ls
 # cd novu/docker/kubernetes/helm/
 cd novu
 ls
