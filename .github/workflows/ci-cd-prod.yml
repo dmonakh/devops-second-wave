@@ -3,8 +3,6 @@ name: CI/CD Prod
 on:
   push:
     paths:
-      - 'terraform/**'
-      - 'microservice/**'
       - '.github/workflows/ci-cd-prod.yml'
     branches:
       - main

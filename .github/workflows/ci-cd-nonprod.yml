@@ -3,8 +3,7 @@ name: CI/CD Non-prod
 on:
   push:
     paths:
-      - 'terraform/**'
-      - 'microservice/**'
+      - 'non-prod/**'
       - '.github/workflows/ci-cd-nonprod.yml'
     branches:
       - stage
@@ -22,7 +21,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: ./terraform
+        working-directory: ./non-prod
 
     steps:
       - name: Checkout code
@@ -45,23 +44,23 @@ jobs:
 
       - name: Create bucket if dosn't exists
         env:
-          SCRIPT_DIR: ${{ github.workspace }}/terraform/scripts
+          SCRIPT_DIR: ${{ github.workspace }}/scripts
         run: bash  $SCRIPT_DIR/create-bucket.sh
           
       - name: terraform init
-        run: terraform init -backend-config="bucket=${BUCKET_NAME}"
+        run: terraform init -backend-config="bucket=${BUCKET_NAME}" -chdir=terraform
 
       - name: terraform plan
         id: plan
-        run: terraform plan -lock=false -var="project_id=${{ secrets.GCP_PROJECT_ID_NONPROD1 }}" 
+        run: terraform plan -lock=false -var="project_id=${{ secrets.GCP_PROJECT_ID_NONPROD1 }}" -chdir=terraform
         
       - name: terraform apply 
         if: "!contains(github.event.head_commit.message, 'destroy')"
-        run: terraform apply -lock=false -auto-approve -var="project_id=${{ secrets.GCP_PROJECT_ID_NONPROD1 }}"
+        run: terraform apply -lock=false -auto-approve -var="project_id=${{ secrets.GCP_PROJECT_ID_NONPROD1 }}" -chdir=terraform
 
       - name: Terraform Destroy
         if: contains(github.event.head_commit.message, 'destroy')
-        run: terraform destroy -lock=false -auto-approve -var="project_id=${{ secrets.GCP_PROJECT_ID_NONPROD1 }}"
+        run: terraform destroy -lock=false -auto-approve -var="project_id=${{ secrets.GCP_PROJECT_ID_NONPROD1 }}" -chdir=terraform
         
   # CD:
   #   needs: 
