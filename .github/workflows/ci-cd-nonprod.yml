@@ -94,8 +94,7 @@ jobs:
           SCRIPT_DIR: ${{ github.workspace }}/non-prod/scripts
         run: bash $SCRIPT_DIR/init-chatwoot.sh
 
-      # - name: Deploy Novu
-      #   env:
-      #     SCRIPT_DIR: ${{ github.workspace }}/non-prod/scripts
-      #   run: bash $SCRIPT_DIR/init-novu.sh
-      
+      - name: Deploy Novu
+        env:
+          SCRIPT_DIR: ${{ github.workspace }}/non-prod/scripts
+        run: bash $SCRIPT_DIR/init-novu.sh
