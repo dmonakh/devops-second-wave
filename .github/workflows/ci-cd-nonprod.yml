@@ -98,6 +98,3 @@ jobs:
       #   env:
       #     SCRIPT_DIR: ${{ github.workspace }}/non-prod/scripts
       #   run: bash $SCRIPT_DIR/init-novu.sh
-
-
-      
