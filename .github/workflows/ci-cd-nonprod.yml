@@ -89,12 +89,12 @@ jobs:
       - name: Get kubeconfig 
         run: gcloud container clusters get-credentials $CLUSTER_NAME --region=$REGION --project=${{ secrets.GCP_PROJECT_ID_NONPROD1 }}
 
-      # - name: Deploy Chatwoot
-      #   env:
-      #     SCRIPT_DIR: ${{ github.workspace }}/non-prod/scripts
-      #   run: bash $SCRIPT_DIR/init-chatwoot.sh
-
-      - name: Deploy Novu
+      - name: Deploy Chatwoot
         env:
           SCRIPT_DIR: ${{ github.workspace }}/non-prod/scripts
-        run: bash $SCRIPT_DIR/init-novu.sh
+        run: bash $SCRIPT_DIR/init-chatwoot.sh
+
+      # - name: Deploy Novu
+      #   env:
+      #     SCRIPT_DIR: ${{ github.workspace }}/non-prod/scripts
+      #   run: bash $SCRIPT_DIR/init-novu.sh
